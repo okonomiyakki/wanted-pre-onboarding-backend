@@ -4,11 +4,14 @@ import * as userController from '../controllers/userController';
 
 const userRouter = Router();
 
-/** 회원 가입 라우터 */
+/** 회원가입 라우터 */
 userRouter.post(
   '/signup',
   userValidator.signUpUserValidateHandler,
   userController.signUpUserHandler
 );
+
+/** 로그인 라우터 */
+userRouter.post('/login', userValidator.logInUserValidateHandler, userController.logInUserHandler);
 
 export default userRouter;
