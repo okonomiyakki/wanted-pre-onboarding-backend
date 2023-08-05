@@ -7,14 +7,12 @@ import * as User from '../types/userType';
 import * as userRepository from '../repositories/userRepository';
 
 /** 회원가입 - 비밀번호 해싱 */
-export const signUpUser = async (sginUpInfo: User.SignUp) => {
+export const signUpUser = async (sginUpInfo: User.SignUp): Promise<void> => {
   const foundHashedPassword = await hashPassword(sginUpInfo.password);
 
   sginUpInfo.password = foundHashedPassword;
 
-  const createdUserId = await userRepository.createUser(sginUpInfo);
-
-  return createdUserId;
+  await userRepository.createUser(sginUpInfo);
 };
 
 /** 로그인 - 엑세스 토큰, 리프레시 토큰 발급 */
