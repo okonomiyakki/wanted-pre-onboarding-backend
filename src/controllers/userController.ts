@@ -16,7 +16,7 @@ export const signUpUserHandler = async (req: Request, res: Response, next: NextF
 
     await userService.signUpUser(sginUpInfo);
 
-    res.status(201).json({ message: '회원 가입 성공' });
+    res.status(201).json({ message: '회원 가입 성공', data: {} });
   } catch (error) {
     error instanceof AppError ? next(error) : next(AppErrors.handleInternalServerError());
   }
@@ -34,15 +34,7 @@ export const logInUserHandler = async (req: Request, res: Response, next: NextFu
 
     const foundUserToken: User.Tokens = await userService.logInUser(logInInfo);
 
-    res.cookie('Authorization', `Bearer ${foundUserToken.accessToken}`, {
-      httpOnly: false,
-    });
-
-    res.cookie('refreshToken', foundUserToken.refreshToken, {
-      httpOnly: false,
-    });
-
-    res.status(201).json({ message: '로그인 성공' });
+    res.status(201).json({ data: foundUserToken });
   } catch (error) {
     error instanceof AppError ? next(error) : next(AppErrors.handleInternalServerError());
   }
