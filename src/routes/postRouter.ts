@@ -29,4 +29,7 @@ postRouter.delete(
   postController.removePostHandler
 );
 
+/** 게시글 전체 조회 */
+postRouter.get('/', postController.getAllPostsHandler);
+
 export default postRouter;
