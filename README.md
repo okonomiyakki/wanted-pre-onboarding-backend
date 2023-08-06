@@ -634,6 +634,14 @@ REFRESH_TOKEN_EXPIRES_IN=${REFRESH_TOKEN_EXPIRES_IN}
    GET /api/v1/posts/:id
    ```
 
+   - 요청 정보
+
+     - Path Variables
+
+     ```
+     id : Number
+     ```
+
    - 성공 응답
 
      - 200 OK
@@ -687,5 +695,5 @@ REFRESH_TOKEN_EXPIRES_IN=${REFRESH_TOKEN_EXPIRES_IN}
 ## 가산점 추가 기능
 
 - AWS EC2와 GCP MYSQL의 클라우드 인프라 구조를 설계하였습니다.
-- Nginx 웹 서버를 연결하여 백엔드를 pm2로 실행한 후 리다이렌션 하도록 구현하였습니다.
+- Nginx 웹 서버를 연결하여 백엔드를 pm2로 실행한 후 해당 url을 리다이렌션 하도록 구현하였습니다.
 - http://43.200.110.0/
