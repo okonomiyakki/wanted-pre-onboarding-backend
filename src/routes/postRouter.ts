@@ -13,4 +13,20 @@ postRouter.post(
   postController.addPostHandler
 );
 
+/** 게시글 수정 라우터 */
+postRouter.patch(
+  '/:id',
+  AuthenticateHandler,
+  postValidator.editPostValidateHandler,
+  postController.editPostHandler
+);
+
+/** 게시글 삭제 라우터 */
+postRouter.delete(
+  '/:id',
+  AuthenticateHandler,
+  postValidator.removePostValidateHandler,
+  postController.removePostHandler
+);
+
 export default postRouter;
