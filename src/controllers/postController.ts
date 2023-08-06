@@ -24,3 +24,37 @@ export const addPostHandler = async (req: AuthRequest, res: Response, next: Next
     error instanceof AppError ? next(error) : next(AppErrors.handleInternalServerError());
   }
 };
+
+/** 게시글 수정 */
+export const editPostHandler = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const { user_id } = req.user;
+    const post_id = parseInt(req.params.id);
+    const { title, content } = req.body;
+
+    const updatePostInfo: Post.UpdateInfo = {
+      title,
+      content,
+    };
+
+    await postService.editPost(user_id, post_id, updatePostInfo);
+
+    res.status(201).json({ message: '게시글 수정 성공', data: {} });
+  } catch (error) {
+    error instanceof AppError ? next(error) : next(AppErrors.handleInternalServerError());
+  }
+};
+
+/** 게시글 삭제 */
+export const removePostHandler = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const { user_id } = req.user;
+    const post_id = parseInt(req.params.id);
+
+    await postService.removePost(user_id, post_id);
+
+    res.status(201).json({ message: '게시글 삭제 성공', data: {} });
+  } catch (error) {
+    error instanceof AppError ? next(error) : next(AppErrors.handleInternalServerError());
+  }
+};
