@@ -1,4 +1,4 @@
-# 원티드 프리온보딩 백엔드 인턴쉽 선발 과제
+## 원티드 프리온보딩 백엔드 인턴쉽 선발 과제
 
 ## 1. 지원자 성명 : 박지원
 
@@ -6,12 +6,26 @@
 
 ### 1. AWS EC2 배포 주소
 
-    💻 http://43.200.110.0/
+💻 http://43.200.110.0/
 
 ### 2. 로컬 실행
 
 ```
-wanted-pre-onboarding-backend/.env
+git clone https://github.com/okonomiyakki/wanted-pre-onboarding-backend.git
+
+cd wanted-pre-onboarding-backend
+
+touch .env
+
+npm install
+
+npm run dev
+```
+
+- .env 파일 구성 예시
+
+```
+# wanted-pre-onboarding-backend/.env
 
 
 BCRYPT_SALT_ROUNDS=${BCRYPT_SALT_ROUNDS}
@@ -33,21 +47,80 @@ REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET}
 REFRESH_TOKEN_EXPIRES_IN=${REFRESH_TOKEN_EXPIRES_IN}
 ```
 
-```
-git clone https://github.com/okonomiyakki/wanted-pre-onboarding-backend.git
+### 3. 엔드포인트 호출
 
-cd wanted-pre-onboarding-backend
+- USER API
 
-touch .env
+  - 회원가입
+    ```
+    curl --location --request POST 'http://43.200.110.0/api/v1/users/signup' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "email": "test@gmail.com",
+        "password": "test1234"
+    }'
+    ```
+  - 로그인
+    ```
+    curl --location --request POST 'http://43.200.110.0/api/v1/users/login' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "email": "test@gmail.com",
+        "password": "test1234"
+    }'
+    ```
 
-npm install
+- POST API
 
-npm run dev
-```
+  - 게시글 등록
+    ```
+    curl --location --request POST 'http://43.200.110.0/api/v1/posts' \
+    --header 'Content-Type: application/json' \
+    --header 'Authorization: Bearer ${ACCESS_TOKEN}' \
+    --header 'Cookie: RefreshToken= ${REFRESH_TOKEN}' \
+    --data '{
+        "title": "example title",
+        "content": "example content"
+    }'
+    ```
+  - 게시글 수정
 
-### 🔊 엔드포인트 호출
+    ```
+    curl --location --request PATCH 'http://43.200.110.0/api/v1/posts/:id' \
+    --header 'Content-Type: application/json' \
+    --header 'Authorization: Bearer ${ACCESS_TOKEN}' \
+    --header 'Cookie: RefreshToken= ${REFRESH_TOKEN}' \
+    --data '{
+        "title": "edit example title",
+        "content": "edit example content"
+    }'
+    ```
+
+  - 게시글 삭제
+
+    ```
+    curl --location --request DELETE 'http://43.200.110.0/api/v1/posts/:id' \
+    --header 'Content-Type: application/json' \
+    --header 'Authorization: Bearer ${ACCESS_TOKEN}' \
+    --header 'Cookie: RefreshToken= ${REFRESH_TOKEN}'
+    ```
+
+  - 게시글 전체 조회
+
+    ```
+    curl --location --request GET 'http://43.200.110.0/api/v1/posts?page=&size='
+    ```
+
+  - 게시글 단일 조회
+    ```
+    curl --location --request GET 'http://43.200.110.0/api/v1/posts/:id'
+    ```
 
 ## 데이터베이스 테이블 구조
+
+### 1. ERD
+
+![image](./src//public/ERD.png)
 
 ## 구현한 API의 동작을 촬영한 데모 영상 링크
 
