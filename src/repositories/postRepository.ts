@@ -79,9 +79,39 @@ export const findAllPosts = async (): Promise<Post.Posts> => {
     FROM post
     `;
 
-    const [posts] = await db.execute(SQL);
+    const [posts] = await db.query(SQL);
 
     return posts as Post.Posts;
+  } catch (error) {
+    throw error;
+  }
+};
+
+/** 게시글 단일 조회 */
+export const findPost = async (post_id: number): Promise<Post.Post> => {
+  try {
+    const selectColumns = `
+    post.post_id,
+    user.user_id,
+    user.email,
+    post.title,
+    post.content
+    `;
+
+    const SQL = `
+    SELECT ${selectColumns}
+    FROM post
+    JOIN user ON user.user_id = post.user_id
+    WHERE post_id = ?
+    `;
+
+    const [post]: any = await db.query(SQL, [post_id]);
+
+    const isPostValid = post[0].post_id;
+
+    if (!isPostValid) throw AppErrors.handleNotFound('이미 삭제된 게시글 입니다.');
+
+    return post[0];
   } catch (error) {
     throw error;
   }

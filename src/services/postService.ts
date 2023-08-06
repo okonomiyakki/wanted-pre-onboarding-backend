@@ -29,3 +29,11 @@ export const getAllPosts = async (page: number, size: number): Promise<Post.Page
 
   return pagenatedPostsInfo;
 };
+
+/** 게시글 단일 조회 */
+
+export const getPost = async (post_id: number): Promise<Post.Post> => {
+  const foundPost: Post.Post = await postRepository.findPost(post_id);
+
+  return foundPost;
+};
