@@ -203,6 +203,8 @@ REFRESH_TOKEN_EXPIRES_IN=${REFRESH_TOKEN_EXPIRES_IN}
    - utils : 재사용함수 로직들이 존재합니다.
    - app.ts : 서버 실행 파일입니다.
 
+   </br>
+
 2. BCRYPT 비밀번호 해싱
 
    - SALT ROUNDS값으로 해싱 반복 횟수를 조정하여 느린 해싱을 사용할 수 있었고, 사용자의 비밀번호를 안전하게 저장하기 위해 선택하였습니다.
@@ -276,6 +278,14 @@ REFRESH_TOKEN_EXPIRES_IN=${REFRESH_TOKEN_EXPIRES_IN}
      ```
 
    - 실패 응답
+     - 400 Bad Request
+     ```json
+     {
+       "ststus": "Error",
+       "ststusCode": "400",
+       "message": "올바른 email 형식이 아닙니다."
+     }
+     ```
      - 400 Bad Request
      ```json
      {
