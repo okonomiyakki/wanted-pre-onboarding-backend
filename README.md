@@ -397,7 +397,7 @@ REFRESH_TOKEN_EXPIRES_IN=${REFRESH_TOKEN_EXPIRES_IN}
      {
        "ststus": "Error",
        "ststusCode": "400",
-       "message": ${요청에 필요한 필수 파라미터 누락 또는 유효성 불일치 관련 메시지}
+       "message": "요청에 필요한 필수 파라미터 누락 또는 유효성 불일치 관련 메시지"
      }
      ```
      - 401 Unauthorized
@@ -405,7 +405,7 @@ REFRESH_TOKEN_EXPIRES_IN=${REFRESH_TOKEN_EXPIRES_IN}
      {
        "ststus": "Error",
        "ststusCode": "401",
-       "message": ${토큰 만료 또는 인증 정보 유효성 불일치 관련 메시지}
+       "message": "토큰 만료 또는 인증 정보 유효성 불일치 관련 메시지"
      }
      ```
      - 500 Internal Server Error
@@ -474,7 +474,7 @@ REFRESH_TOKEN_EXPIRES_IN=${REFRESH_TOKEN_EXPIRES_IN}
      {
        "ststus": "Error",
        "ststusCode": "400",
-       "message": ${요청에 필요한 필수 파라미터 누락 또는 불일치 관련 메시지}
+       "message": "요청에 필요한 필수 파라미터 누락 또는 불일치 관련 메시지"
      }
      ```
      - 401 Unauthorized
@@ -482,7 +482,7 @@ REFRESH_TOKEN_EXPIRES_IN=${REFRESH_TOKEN_EXPIRES_IN}
      {
        "ststus": "Error",
        "ststusCode": "401",
-       "message": ${토큰 만료 또는 인증 정보 유효성 불일치 관련 메시지}
+       "message": "토큰 만료 또는 인증 정보 유효성 불일치 관련 메시지"
      }
      ```
      - 500 Internal Server Error
@@ -542,7 +542,7 @@ REFRESH_TOKEN_EXPIRES_IN=${REFRESH_TOKEN_EXPIRES_IN}
      {
        "ststus": "Error",
        "ststusCode": "400",
-       "message": ${요청에 필요한 필수 파라미터 누락 또는 불일치 관련 메시지}
+       "message": "요청에 필요한 필수 파라미터 누락 또는 불일치 관련 메시지"
      }
      ```
      - 401 Unauthorized
@@ -550,7 +550,7 @@ REFRESH_TOKEN_EXPIRES_IN=${REFRESH_TOKEN_EXPIRES_IN}
      {
        "ststus": "Error",
        "ststusCode": "401",
-       "message": ${토큰 만료 또는 인증 정보 유효성 불일치 관련 메시지}
+       "message": "토큰 만료 또는 인증 정보 유효성 불일치 관련 메시지"
      }
      ```
      - 500 Internal Server Error
@@ -608,7 +608,7 @@ REFRESH_TOKEN_EXPIRES_IN=${REFRESH_TOKEN_EXPIRES_IN}
      {
        "ststus": "Error",
        "ststusCode": "400",
-       "message": ${요청에 필요한 필수 파라미터 누락 또는 불일치 관련 메시지}
+       "message": "요청에 필요한 필수 파라미터 누락 또는 불일치 관련 메시지"
      }
      ```
      - 401 Unauthorized
@@ -616,7 +616,7 @@ REFRESH_TOKEN_EXPIRES_IN=${REFRESH_TOKEN_EXPIRES_IN}
      {
        "ststus": "Error",
        "ststusCode": "401",
-       "message": ${토큰 만료 또는 인증 정보 유효성 불일치 관련 메시지}
+       "message": "토큰 만료 또는 인증 정보 유효성 불일치 관련 메시지"
      }
      ```
      - 500 Internal Server Error
@@ -664,7 +664,7 @@ REFRESH_TOKEN_EXPIRES_IN=${REFRESH_TOKEN_EXPIRES_IN}
      {
        "ststus": "Error",
        "ststusCode": "400",
-       "message": ${요청에 필요한 필수 파라미터 누락 또는 불일치 관련 메시지}
+       "message": "요청에 필요한 필수 파라미터 누락 또는 불일치 관련 메시지"
      }
      ```
      - 401 Unauthorized
@@ -672,7 +672,7 @@ REFRESH_TOKEN_EXPIRES_IN=${REFRESH_TOKEN_EXPIRES_IN}
      {
        "ststus": "Error",
        "ststusCode": "401",
-       "message": ${토큰 만료 또는 인증 정보 유효성 불일치 관련 메시지}
+       "message": "토큰 만료 또는 인증 정보 유효성 불일치 관련 메시지"
      }
      ```
      - 404 Not Found
