@@ -66,3 +66,13 @@ export class GetAllPostsDto {
     this.size = size;
   }
 }
+
+export class GetPostDto {
+  @IsNotEmpty({ message: 'post_id가 입력되지 않았습니다.' })
+  @IsInt({ message: 'post_id가 정수 형식이 아닙니다.' })
+  public post_id: number;
+
+  constructor(post_id: number) {
+    this.post_id = post_id;
+  }
+}
