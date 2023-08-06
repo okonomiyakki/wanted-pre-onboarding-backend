@@ -51,3 +51,18 @@ export class RemovePostDto {
     this.post_id = post_id;
   }
 }
+
+export class GetAllPostsDto {
+  @IsNotEmpty({ message: 'page가 입력되지 않았습니다.' })
+  @IsInt({ message: 'page가 정수 형식이 아닙니다.' })
+  public page: number;
+
+  @IsNotEmpty({ message: 'size가 입력되지 않았습니다.' })
+  @IsInt({ message: 'size가 정수 형식이 아닙니다.' })
+  public size: number;
+
+  constructor(page: number, size: number) {
+    this.page = page;
+    this.size = size;
+  }
+}
