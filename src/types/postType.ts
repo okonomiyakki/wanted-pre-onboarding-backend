@@ -11,6 +11,8 @@ export type UpdateInfo = Pick<PostTable, 'title' | 'content'>;
 
 export type Posts = PostTable[];
 
+export type Post = PostTable;
+
 export type PagenateInfo = {
   pageInfo: {
     page: number;
