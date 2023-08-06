@@ -72,3 +72,20 @@ export const getAllPostsValidateHandler = async (
     next(AppErrors.handleInternalServerError());
   }
 };
+
+export const getPostValidateHandler = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const post_id = parseInt(req.params.id);
+
+    const getPost = new Post.GetPostDto(post_id);
+
+    validateDto(getPost, next);
+  } catch (error) {
+    console.log(error);
+    next(AppErrors.handleInternalServerError());
+  }
+};
