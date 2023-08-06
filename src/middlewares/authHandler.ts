@@ -14,7 +14,6 @@ const generateNewAccessTokenHandler = async (
 ) => {
   try {
     const refreshToken = req.cookies.RefreshToken;
-    console.log('refreshToken', refreshToken);
 
     if (refreshToken === undefined)
       throw AppErrors.handleUnauthorized('RefreshToken이 존재하지 않습니다.');
@@ -50,8 +49,6 @@ const AuthenticateHandler = async (req: AuthRequest, res: Response, next: NextFu
     const authHeader = req.headers['authorization'];
 
     const accessToken = authHeader && authHeader.split('Bearer ')[1];
-
-    console.log('accessToken', accessToken);
 
     if (accessToken === undefined)
       throw AppErrors.handleUnauthorized(
