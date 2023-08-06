@@ -48,10 +48,27 @@ export const removePostValidateHandler = async (
     const { user_id } = req.user;
     const post_id = parseInt(req.params.id);
 
-    const RemovePost = new Post.RemovePostDto(user_id, post_id);
+    const removePost = new Post.RemovePostDto(user_id, post_id);
 
-    validateDto(RemovePost, next);
+    validateDto(removePost, next);
   } catch (error) {
+    next(AppErrors.handleInternalServerError());
+  }
+};
+
+export const getAllPostsValidateHandler = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { page, size } = req.query;
+
+    const getAllPosts = new Post.GetAllPostsDto(Number(page), Number(size));
+
+    validateDto(getAllPosts, next);
+  } catch (error) {
+    console.log(error);
     next(AppErrors.handleInternalServerError());
   }
 };
