@@ -39,7 +39,7 @@ export const editPostHandler = async (req: AuthRequest, res: Response, next: Nex
 
     await postService.editPost(user_id, post_id, updatePostInfo);
 
-    res.status(201).json({ message: '게시글 수정 성공', data: {} });
+    res.status(200).json({ message: '게시글 수정 성공', data: {} });
   } catch (error) {
     error instanceof AppError ? next(error) : next(AppErrors.handleInternalServerError());
   }
@@ -53,7 +53,7 @@ export const removePostHandler = async (req: AuthRequest, res: Response, next: N
 
     await postService.removePost(user_id, post_id);
 
-    res.status(201).json({ message: '게시글 삭제 성공', data: {} });
+    res.status(200).json({ message: '게시글 삭제 성공', data: {} });
   } catch (error) {
     error instanceof AppError ? next(error) : next(AppErrors.handleInternalServerError());
   }
