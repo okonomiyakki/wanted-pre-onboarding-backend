@@ -71,3 +71,16 @@ export const getAllPostsHandler = async (req: AuthRequest, res: Response, next: 
     error instanceof AppError ? next(error) : next(AppErrors.handleInternalServerError());
   }
 };
+
+/** 게시글 단일 조회 */
+export const getPostHandler = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const post_id = parseInt(req.params.id);
+
+    const postInfo = await postService.getPost(post_id);
+
+    res.status(200).json({ data: postInfo });
+  } catch (error) {
+    error instanceof AppError ? next(error) : next(AppErrors.handleInternalServerError());
+  }
+};
