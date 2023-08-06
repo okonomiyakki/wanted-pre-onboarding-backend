@@ -3,6 +3,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import db from './configs/dbconfig';
 import env from './configs/envconfig';
+import root from './routes/rootRouter';
 import router from './routes';
 import { errorHandler } from './middlewares/errorHandler';
 
@@ -20,6 +21,7 @@ app.use(cors(corsOptions));
 app.use(cookieParser()); // 쿠키 파싱
 app.use(express.json()); // json 파싱
 
+app.use('/', root);
 app.use('/api', router);
 app.use(errorHandler);
 
