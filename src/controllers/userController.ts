@@ -40,7 +40,7 @@ export const logInUserHandler = async (req: Request, res: Response, next: NextFu
 
     // res.clearCookie('RefreshToken');
 
-    res.status(201).json({ data: foundUserToken.accessToken });
+    res.status(201).json({ data: { accessToken: foundUserToken.accessToken } });
   } catch (error) {
     error instanceof AppError ? next(error) : next(AppErrors.handleInternalServerError());
   }
