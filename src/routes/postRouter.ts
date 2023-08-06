@@ -30,6 +30,6 @@ postRouter.delete(
 );
 
 /** 게시글 전체 조회 */
-postRouter.get('/', postController.getAllPostsHandler);
+postRouter.get('/', postValidator.getAllPostsValidateHandler, postController.getAllPostsHandler);
 
 export default postRouter;
