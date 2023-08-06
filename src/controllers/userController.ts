@@ -34,7 +34,13 @@ export const logInUserHandler = async (req: Request, res: Response, next: NextFu
 
     const foundUserToken: User.Tokens = await userService.logInUser(logInInfo);
 
-    res.status(201).json({ data: foundUserToken });
+    res.cookie('RefreshToken', foundUserToken.refreshToken, {
+      httpOnly: false,
+    });
+
+    // res.clearCookie('RefreshToken');
+
+    res.status(201).json({ data: foundUserToken.accessToken });
   } catch (error) {
     error instanceof AppError ? next(error) : next(AppErrors.handleInternalServerError());
   }
