@@ -64,9 +64,11 @@ REFRESH_TOKEN_EXPIRES_IN=${REFRESH_TOKEN_EXPIRES_IN}
 - USER API
 
   - 회원가입
-    ```
+
+    ```http
     POST /api/v1/users/signup
     ```
+
     ```bash
     curl --location --request POST 'http://43.200.110.0/api/v1/users/signup' \
     --header 'Content-Type: application/json' \
@@ -75,10 +77,13 @@ REFRESH_TOKEN_EXPIRES_IN=${REFRESH_TOKEN_EXPIRES_IN}
         "password": "test1234"
     }'
     ```
+
   - 로그인
-    ```
+
+    ```http
     POST /api/v1/users/login
     ```
+
     ```bash
     curl --location --request POST 'http://43.200.110.0/api/v1/users/login' \
     --header 'Content-Type: application/json' \
@@ -91,9 +96,11 @@ REFRESH_TOKEN_EXPIRES_IN=${REFRESH_TOKEN_EXPIRES_IN}
 - POST API
 
   - 게시글 등록
-    ```
+
+    ```http
     POST /api/v1/posts
     ```
+
     ```bash
     curl --location --request POST 'http://43.200.110.0/api/v1/posts' \
     --header 'Content-Type: application/json' \
@@ -104,9 +111,10 @@ REFRESH_TOKEN_EXPIRES_IN=${REFRESH_TOKEN_EXPIRES_IN}
         "content": "example content"
     }'
     ```
+
   - 게시글 수정
 
-    ```
+    ```http
     PATCH /api/v1/posts/:id
     ```
 
@@ -123,7 +131,7 @@ REFRESH_TOKEN_EXPIRES_IN=${REFRESH_TOKEN_EXPIRES_IN}
 
   - 게시글 삭제
 
-    ```
+    ```http
     DELETE /api/v1/posts/:id
     ```
 
@@ -136,7 +144,7 @@ REFRESH_TOKEN_EXPIRES_IN=${REFRESH_TOKEN_EXPIRES_IN}
 
   - 게시글 전체 조회
 
-    ```
+    ```http
     GET /api/v1/posts?page=&size=
     ```
 
@@ -145,9 +153,11 @@ REFRESH_TOKEN_EXPIRES_IN=${REFRESH_TOKEN_EXPIRES_IN}
     ```
 
   - 게시글 단일 조회
-    ```
+
+    ```http
     GET /api/v1/posts/:id
     ```
+
     ```bash
     curl --location --request GET 'http://43.200.110.0/api/v1/posts/:id'
     ```
@@ -193,12 +203,27 @@ REFRESH_TOKEN_EXPIRES_IN=${REFRESH_TOKEN_EXPIRES_IN}
    - utils : 재사용함수 로직들이 존재합니다.
    - app.ts : 서버 실행 파일입니다.
 
-2. JWT 토큰 인증 방식
+2. BCRYPT 비밀번호 해싱
+
+   - SALT ROUNDS값으로 해싱 반복 횟수를 조정하여 느린 해싱을 사용할 수 있었고, 사용자의 비밀번호를 안전하게 저장하기 위해 선택하였습니다.
+
+   </br>
+
+3. CLASS VALIDATOR 유효성 검사
+
+   - 유연하고 다양한 유효성 검사 규칙을 제공하여 사용하였습니다. 효율적인 유지보수를 위해 별도의 미들웨어로 분류하여 해당 기능을 구현하였습니다.
+
+   </br>
+
+4. JWT 토큰 인증 방식
 
    - 서버에서 해당 세션 정보를 저장할 필요가 없고, 사용자가 많은 서비스의 경우 DB 조회를 줄일 수 있다고 생각하여 선택하였습니다.
+
      > 도메인을 구입하는 환경이 안되어 HTTPS 적용을 하지 못했지만 안전한 토큰 전송에 꼭 필요하다는 부분은 알고 있습니다.
 
-3. 게시글 작성자만 수정 및 삭제 가능 기능
+     </br>
+
+5. 게시글 작성자만 수정 및 삭제 가능 기능
 
    - JWT 토큰 발급 시 PAYLOAD에 회원의 고유 식별자(user_id)를 추가하여 로그인 이후 사용자가 본인이 작성한 게시글을 수정 및 삭제 행위를 할때,
 
@@ -206,7 +231,9 @@ REFRESH_TOKEN_EXPIRES_IN=${REFRESH_TOKEN_EXPIRES_IN}
 
      > 게시글 수정 및 삭제 시 추가로 해당 회원이 작성한 게시글 여부를 확인하는 validation 로직 사용을 줄일 수 있었고, 결과적으로 DB 조회를 줄여 네트워크 비용을 감소시키고자 하였습니다.
 
-4. JWT 토큰 자동 갱신
+     </br>
+
+6. JWT 토큰 자동 갱신
 
    - 서비스에서 사용자가 로그인에 성공하면 ACCESS TOKEN이 발급되는데, JWT 토큰 인증 방식인 만큼 만료기간을 짧게 설정하였습니다. 하지만 이를 만료될 때 마다 재발급하는 API를 만들어 요청시키는 것 보다 자동으로 갱신하는 로직을 서버(미들웨어)에서 구현하고자 하였습니다.
 
@@ -214,9 +241,451 @@ REFRESH_TOKEN_EXPIRES_IN=${REFRESH_TOKEN_EXPIRES_IN}
 
      > 로그인 성공 시, Response Body로 ACCESS TOKEN이 발급, cookie로 REFRESH TOKEN이 발급됩니다. 해당 서비스에서의 만료시간은 ACCESS TOKEN이 1시간, REFRESH TOKEN이 2주로 설정되어있습니다. REFRESH TOKEN 만료의 경우에는 '재로그인 요구' 에러 메시지를 반환합니다.
 
-5. BCRYPT 비밀번호 해싱
-   - SALT ROUNDS값으로 해싱 반복 횟수를 조정하여 느린 해싱을 사용할 수 있었고, 사용자의 비밀번호를 안전하게 저장하기 위해 선택하였습니다.
+     </br>
 
 ## API 명세(request/response 포함)
 
+### USER API
+
+1. 회원가입
+
+   ```http
+   POST /api/v1/users/signup
+   ```
+
+   - 요청 정보
+
+     - body
+
+     ```json
+     {
+       "email": "test@gmail.com",
+       "password": "test1234"
+     }
+     ```
+
+   - 성공 응답
+
+     - 201 Created
+
+     ```json
+     {
+       "message": "회원 가입 성공",
+       "data": {}
+     }
+     ```
+
+   - 실패 응답
+     - 400 Bad Request
+     ```json
+     {
+       "ststus": "Error",
+       "ststusCode": "400",
+       "message": "비밀번호는 최소 8자 이상 이어야 합니다."
+     }
+     ```
+     - 400 Bad Request
+     ```json
+     {
+       "ststus": "Error",
+       "ststusCode": "400",
+       "message": "이미 존재하는 이메일 입니다."
+     }
+     ```
+
+2. 로그인
+
+   ```http
+   POST /api/v1/users/login
+   ```
+
+   - 요청 정보
+
+     - body
+
+     ```json
+     {
+       "email": "test@gmail.com",
+       "password": "test1234"
+     }
+     ```
+
+   - 성공 응답
+
+     - 200 OK
+
+     ```
+      Headers | Set-Cookie : ${refreshToken}
+     ```
+
+     ```json
+      {
+          "data": {
+              "accessToken": ${accessToken}
+          }
+      }
+     ```
+
+   - 실패 응답
+     - 400 Bad Request
+     ```json
+     {
+       "ststus": "Error",
+       "ststusCode": "400",
+       "message": "비밀번호가 일치하지 않습니다."
+     }
+     ```
+     - 404 Not Found
+     ```json
+     {
+       "ststus": "Error",
+       "ststusCode": "400",
+       "message": "존재하지 않는 회원입니다. 회원 가입 후 이용해 주세요."
+     }
+     ```
+
+### POST API
+
+1. 게시글 등록
+
+   ```http
+   POST /api/v1/posts
+   ```
+
+   - 요청 정보
+
+     - Headers
+
+     ```
+     Authorization : Bearer ${accessToken}
+     ```
+
+     - body
+
+     ```json
+     {
+       "title": "example title",
+       "content": "example content"
+     }
+     ```
+
+   - 성공 응답
+
+     - 200 OK (토큰 재발급)
+
+     ```json
+     {
+         "message": "generate new AccessToken",
+         "data": {
+             "newAccessToken": ${accessToken}
+         }
+     }
+     ```
+
+     - 201 Created
+
+     ```json
+     {
+       "message": "게시글 등록 성공",
+       "data": {}
+     }
+     ```
+
+   - 실패 응답
+     - 400 Bad Request
+     ```json
+     {
+       "ststus": "Error",
+       "ststusCode": "400",
+       "message": ${요청에 필요한 필수 파라미터 누락 또는 유효성 불일치 관련 메시지}
+     }
+     ```
+     - 401 Unauthorized
+     ```json
+     {
+       "ststus": "Error",
+       "ststusCode": "401",
+       "message": ${토큰 만료 또는 인증 정보 유효성 불일치 관련 메시지}
+     }
+     ```
+     - 500 Internal Server Error
+     ```json
+     {
+       "ststus": "Error",
+       "ststusCode": "500",
+       "message": "Internal Server Error"
+     }
+     ```
+
+2. 게시글 수정
+
+   ```http
+   PATCH /api/v1/posts/:id
+   ```
+
+   - 요청 정보
+
+     - Headers
+
+     ```
+     Authorization : Bearer ${accessToken}
+     ```
+
+     - Path Variables
+
+     ```
+     id : Number
+     ```
+
+     - body
+
+     ```json
+     {
+       "title": "edit example title",
+       "content": "edit example content"
+     }
+     ```
+
+   - 성공 응답
+
+     - 200 OK (토큰 재발급)
+
+     ```json
+     {
+         "message": "generate new AccessToken",
+         "data": {
+             "newAccessToken": ${accessToken}
+         }
+     }
+     ```
+
+     - 200 OK
+
+     ```json
+     {
+       "message": "게시글 수정 성공",
+       "data": {}
+     }
+     ```
+
+   - 실패 응답
+     - 400 Bad Request
+     ```json
+     {
+       "ststus": "Error",
+       "ststusCode": "400",
+       "message": ${요청에 필요한 필수 파라미터 누락 또는 불일치 관련 메시지}
+     }
+     ```
+     - 401 Unauthorized
+     ```json
+     {
+       "ststus": "Error",
+       "ststusCode": "401",
+       "message": ${토큰 만료 또는 인증 정보 유효성 불일치 관련 메시지}
+     }
+     ```
+     - 500 Internal Server Error
+     ```json
+     {
+       "ststus": "Error",
+       "ststusCode": "500",
+       "message": "Internal Server Error"
+     }
+     ```
+
+3. 게시글 삭제
+
+   ```http
+   DELETE /api/v1/posts/:id
+   ```
+
+   - 요청 정보
+
+     - Headers
+
+     ```
+     Authorization : Bearer ${accessToken}
+     ```
+
+     - Path Variables
+
+     ```
+     id : Number
+     ```
+
+   - 성공 응답
+
+     - 200 OK (토큰 재발급)
+
+     ```json
+     {
+         "message": "generate new AccessToken",
+         "data": {
+             "newAccessToken": ${accessToken}
+         }
+     }
+     ```
+
+     - 200 OK
+
+     ```json
+     {
+       "message": "게시글 삭제 성공",
+       "data": {}
+     }
+     ```
+
+   - 실패 응답
+     - 400 Bad Request
+     ```json
+     {
+       "ststus": "Error",
+       "ststusCode": "400",
+       "message": ${요청에 필요한 필수 파라미터 누락 또는 불일치 관련 메시지}
+     }
+     ```
+     - 401 Unauthorized
+     ```json
+     {
+       "ststus": "Error",
+       "ststusCode": "401",
+       "message": ${토큰 만료 또는 인증 정보 유효성 불일치 관련 메시지}
+     }
+     ```
+     - 500 Internal Server Error
+     ```json
+     {
+       "ststus": "Error",
+       "ststusCode": "500",
+       "message": "Internal Server Error"
+     }
+     ```
+
+4. 게시글 전체 조회
+
+   ```http
+   GET /api/v1/posts?page=&size=
+   ```
+
+   - 요청 정보
+
+     - Query Params
+
+     ```
+     page : Number
+     size : Number
+     ```
+
+   - 성공 응답
+
+     - 200 OK
+
+     ```json
+     {
+       "data": {
+         "pageInfo": {
+           "page": ${요청 페이지 번호},
+           "size": ${요청 페이지 sizing 수},
+           "totalElements": ${전체 데이터 개수},
+           "totalPages": ${전체 페이지 수}
+         },
+         "pageRows": [
+           {
+             "post_id": ${post_id},
+             "user_id": ${user_id},
+             "title": "example title",
+             "content": "example content"
+           }
+         ]
+       }
+     }
+     ```
+
+   - 실패 응답
+     - 400 Bad Request
+     ```json
+     {
+       "ststus": "Error",
+       "ststusCode": "400",
+       "message": ${요청에 필요한 필수 파라미터 누락 또는 불일치 관련 메시지}
+     }
+     ```
+     - 401 Unauthorized
+     ```json
+     {
+       "ststus": "Error",
+       "ststusCode": "401",
+       "message": ${토큰 만료 또는 인증 정보 유효성 불일치 관련 메시지}
+     }
+     ```
+     - 500 Internal Server Error
+     ```json
+     {
+       "ststus": "Error",
+       "ststusCode": "500",
+       "message": "Internal Server Error"
+     }
+     ```
+
+5. 게시글 단일 조회
+
+   ```http
+   GET /api/v1/posts/:id
+   ```
+
+   - 성공 응답
+
+     - 200 OK
+
+     ```json
+      {
+          "data": {
+             "post_id": ${post_id},
+             "user_id": ${user_id},
+             "email": "test@gmail.com",
+             "title": "example title",
+             "content": "example content"
+          }
+      }
+     ```
+
+   - 실패 응답
+     - 400 Bad Request
+     ```json
+     {
+       "ststus": "Error",
+       "ststusCode": "400",
+       "message": ${요청에 필요한 필수 파라미터 누락 또는 불일치 관련 메시지}
+     }
+     ```
+     - 401 Unauthorized
+     ```json
+     {
+       "ststus": "Error",
+       "ststusCode": "401",
+       "message": ${토큰 만료 또는 인증 정보 유효성 불일치 관련 메시지}
+     }
+     ```
+     - 404 Not Found
+     ```json
+     {
+       "ststus": "Error",
+       "ststusCode": "500",
+       "message": "이미 삭제된 게시글 입니다."
+     }
+     ```
+     - 500 Internal Server Error
+     ```json
+     {
+       "ststus": "Error",
+       "ststusCode": "500",
+       "message": "Internal Server Error"
+     }
+     ```
+
 ## 가산점 추가 기능
+
+- AWS EC2와 GCP MYSQL의 클라우드 인프라 구조를 설계하였습니다.
+- Nginx 웹 서버를 연결하여 백엔드를 pm2로 실행한 후 리다이렌션 하도록 구현하였습니다.
+- http://43.200.110.0/
