@@ -32,4 +32,7 @@ postRouter.delete(
 /** 게시글 전체 조회 */
 postRouter.get('/', postValidator.getAllPostsValidateHandler, postController.getAllPostsHandler);
 
+/** 게시글 단일 조회 */
+postRouter.get('/:id', postValidator.getPostValidateHandler, postController.getPostHandler);
+
 export default postRouter;
