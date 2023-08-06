@@ -13,3 +13,8 @@ export type Info = Pick<UserTable, 'user_id' | 'email' | 'password'>;
 export type Payload = Pick<UserTable, 'user_id' | 'email'>;
 
 export type Tokens = { accessToken: string; refreshToken: string };
+
+export type decodedToken = Payload & {
+  iat: number;
+  exp: number;
+};
