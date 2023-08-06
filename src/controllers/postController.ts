@@ -58,3 +58,16 @@ export const removePostHandler = async (req: AuthRequest, res: Response, next: N
     error instanceof AppError ? next(error) : next(AppErrors.handleInternalServerError());
   }
 };
+
+/** 게시글 전체 조회 */
+export const getAllPostsHandler = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const { page, size } = req.query;
+
+    const pagenatedPostsInfo = await postService.getAllPosts(Number(page), Number(size));
+
+    res.status(200).json({ data: pagenatedPostsInfo });
+  } catch (error) {
+    error instanceof AppError ? next(error) : next(AppErrors.handleInternalServerError());
+  }
+};
