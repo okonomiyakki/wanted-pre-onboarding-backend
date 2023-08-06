@@ -63,3 +63,26 @@ export const deletePost = async (user_id: number, post_id: number): Promise<void
     throw error;
   }
 };
+
+/** 게시글 전체 조회 */
+export const findAllPosts = async (): Promise<Post.Posts> => {
+  try {
+    const selectColumns = `
+    post_id,
+    user_id,
+    title,
+    content
+    `;
+
+    const SQL = `
+    SELECT ${selectColumns}
+    FROM post
+    `;
+
+    const [posts] = await db.execute(SQL);
+
+    return posts as Post.Posts;
+  } catch (error) {
+    throw error;
+  }
+};
