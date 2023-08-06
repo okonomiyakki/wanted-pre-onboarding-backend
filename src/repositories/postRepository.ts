@@ -44,7 +44,16 @@ export const updatePost = async (
     WHERE user_id = ? AND post_id = ?
     `;
 
-    await db.execute(SQL, [...updateValues, user_id, post_id]);
+    const [result, _] = await db.execute(SQL, [...updateValues, user_id, post_id]);
+
+    const isAffected = (result as { affectedRows: number }).affectedRows === 1 ? true : false;
+
+    const isMatched = Number((result as { info: string }).info.split(' ')[2]) === 1 ? true : false;
+
+    const isChanged = Number((result as { info: string }).info.split(' ')[5]) === 1 ? true : false;
+
+    if (!isAffected && !isMatched && !isChanged)
+      throw AppErrors.handleForbidden('본인만 수정 가능 합니다.');
   } catch (error) {
     throw error;
   }
@@ -58,7 +67,11 @@ export const deletePost = async (user_id: number, post_id: number): Promise<void
     WHERE user_id = ? AND post_id = ?
     `;
 
-    await db.execute(SQL, [user_id, post_id]);
+    const [result, _] = await db.execute(SQL, [user_id, post_id]);
+
+    const isAffected = (result as { affectedRows: number }).affectedRows === 1 ? true : false;
+
+    if (!isAffected) throw AppErrors.handleForbidden('본인만 삭제 가능 합니다.');
   } catch (error) {
     throw error;
   }
