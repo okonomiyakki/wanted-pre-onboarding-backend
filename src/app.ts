@@ -9,7 +9,7 @@ import { errorHandler } from './middlewares/errorHandler';
 
 const app = express();
 const port = Number(env.PORT || 3000);
-const allowedOrigins = ['http://localhost:3000', 'http://43.200.110.0'];
+const allowedOrigins = ['http://localhost:3000', 'http://43.200.110.0', 'https://43.200.110.0'];
 
 const corsOptions = {
   origin: allowedOrigins,
